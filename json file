@@ -1,0 +1,152 @@
+{
+  "name": "health",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "health",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -240,
+        -112
+      ],
+      "id": "ea4de24b-541d-47fa-84d3-b78e624fc6ab",
+      "name": "Webhook",
+      "webhookId": "dddec5a0-3d40-4ca7-96cb-c51c2cec016f"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        544,
+        -64
+      ],
+      "id": "e7817320-1f08-4397-b0d5-bd4e7002ca0c",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "= الرجاء تحليل الصورة المرفقة بناءً على التعليمات المعطاة لك.",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": " ## Overview\nYou are a nutrition analysis assistant. Your job is to analyze a food dish sent from a webhook and estimate its nutritional breakdown (protein, carbohydrates, sugars, fats, calories). The current date and time is {{ $now.toString() }}\nReturn the response ONLY in valid JSON matching the Structured Output Parser schema.\n\n## Tools\n- Webhook Input: Receives dish name or ingredients from the webhook request\n- Structured Output Parser: Formats the response as structured JSON\n- AI Model: Performs nutritional estimation and analysis\n- Respond to Webhook: Sends the final JSON response back to the caller\n\n## Rules\n- Always return valid JSON\n- Estimate nutrition if exact values unknown\n- Keep response concise\n\n## Instructions\n1) Read dish name or ingredients from webhook\n2) Analyze macros and calories\n3) Return structured nutrition JSON\n\n## Examples\n1)\nInput: \"Chicken rice with vegetables\"\n- Action: Analyze ingredients\n- Output:\n{\n \"protein\":\"35g\",\n \"carbohydrates\":\"45g\",\n \"sugars\":\"5g\",\n \"fats\":\"12g\",\n \"calories\":\"420 kcal\"\n}",
+          "passthroughBinaryImages": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        176,
+        -128
+      ],
+      "id": "0410d55c-b092-448e-aa70-6046d80db623",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -144,
+        96
+      ],
+      "id": "e182d2b3-1ddd-49c0-a395-4ed212c68398",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "q2HMJv0oeSuUE6kY",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"output\": {\n    \"dish_name\": \"سلطة دجاج مشوي\",\n    \"calories\": 350,\n    \"protein\": 30,\n    \"carbs\": 10,\n    \"fats\": 15,\n    \"ingredients\": [\"صدر دجاج\", \"خس\", \"طماطم\", \"زيت زيتون\"]\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        112,
+        96
+      ],
+      "id": "c7a4c71c-6fcc-46dd-9f99-4ee8b6572f19",
+      "name": "Structured Output Parser"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "b894c376-4ba1-4dc2-91a8-3fa02ea39193",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "70c7b42cd4e1bce90f3493884cae34447deabffd6e82456b9edd48e7db1a83e0"
+  },
+  "id": "Bdz1IEmLgQ6AB5uo",
+  "tags": []
+}
