@@ -1,9 +1,10 @@
 # -Health-AI-Smart-Meal-Analyzer
 🥗 Health AI: Smart Meal Analyzer An automated AI-powered solution that analyzes food images to provide instant nutritional insights, built using n8n, OpenAI (GPT-4o/Vision), and Webhooks.
 
-<img width="954" height="599" alt="Screenshot 2026-03-23 165442" src="https://github.com/user-attachments/assets/9c718c4f-3a71-480d-a5a2-1cb8d33246d2" />
 
 <img width="1233" height="580" alt="Screenshot 2026-03-23 165431" src="https://github.com/user-attachments/assets/035c8a97-c677-4d62-aaaf-3e2c7df175b6" />
+
+<img width="954" height="599" alt="Screenshot 2026-03-23 165442" src="https://github.com/user-attachments/assets/9c718c4f-3a71-480d-a5a2-1cb8d33246d2" />
 <img width="880" height="623" alt="Screenshot 2026-03-23 165202" src="https://github.com/user-attachments/assets/d494faf0-5656-4afe-b56a-5955be80d6e4" />
 
 
